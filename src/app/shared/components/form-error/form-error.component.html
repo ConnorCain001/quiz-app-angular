@@ -1,0 +1,6 @@
+<div
+  *ngIf="error"
+  class="flex items-center gap-2 rounded-lg border-2 border-rose-500 bg-rose-500 px-4 py-2 font-medium">
+  <i class="material-icons">error_outline</i>
+  <span>{{ error | capitalize | punctuate }}</span>
+</div>

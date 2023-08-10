@@ -1,0 +1,24 @@
+<ng-container *ngIf="question">
+  <div
+    [innerHTML]="question.question"
+    class="mb-12 text-center text-2xl font-semibold"></div>
+  <div class="grid auto-rows-[1fr] gap-4 md:grid-cols-2">
+    <button
+      buttonStyle
+      [ngClass]="{
+        'transition-transform duration-100': answered,
+        'scale-[.975] !border-rose-500 !bg-rose-500':
+          answered && answer !== question.correct_answer,
+        'scale-[1.025] !border-emerald-500 !bg-emerald-500 !opacity-100':
+          answered && answer === question.correct_answer
+      }"
+      [disabled]="answered"
+      *ngFor="
+        let answer of [[question.correct_answer], question.incorrect_answers]
+          | concat
+          | shuffle
+      "
+      [innerHtml]="answer"
+      (click)="answerOnClick(answer)"></button>
+  </div>
+</ng-container>

@@ -1,0 +1,108 @@
+<ng-container *ngIf="data$ | async as data">
+  <form [formGroup]="form" (ngSubmit)="createQuiz()">
+    <h1 class="mb-8 text-4xl font-bold">Create a custom quiz</h1>
+
+    <fieldset class="mb-2">
+      <label class="text-sm font-semibold" for="amount">
+        Number of questions
+      </label>
+      <input
+        id="amount"
+        min="1"
+        max="50"
+        class="peer w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md border border-gray-500 bg-gray-800 px-4 py-2"
+        [ngClass]="{
+          '!border-rose-500':
+            form.get('amount')?.invalid &&
+            form.get('amount')?.dirty &&
+            form.get('amount')?.touched
+        }"
+        type="number"
+        formControlName="amount" />
+      <div
+        *ngIf="
+          form.get('amount')?.invalid &&
+          form.get('amount')?.dirty &&
+          form.get('amount')?.touched
+        "
+        class="mt-0.5 text-xs font-semibold text-rose-500 peer-focus:hidden">
+        <ng-container>
+          <span *ngIf="form.get('amount')?.hasError('required')">
+            Number of questions is required
+          </span>
+          <span *ngIf="form.get('amount')?.hasError('pattern')">
+            Number of questions must be a number between 1 and 50
+          </span>
+          <span *ngIf="form.get('amount')?.hasError('min')">
+            Minimum number of questions is 1
+          </span>
+          <span *ngIf="form.get('amount')?.hasError('max')">
+            Maximum number of questions is 50
+          </span>
+        </ng-container>
+      </div>
+    </fieldset>
+
+    <fieldset class="mb-2">
+      <label class="text-sm font-semibold" for="category">
+        Select category
+      </label>
+      <select
+        id="category"
+        class="w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md border border-gray-500 bg-gray-800 px-4 py-2 capitalize"
+        formControlName="category">
+        <option
+          *ngFor="let category of categories | keyvalue"
+          [value]="category.key">
+          {{ category.value }}
+        </option>
+      </select>
+    </fieldset>
+
+    <fieldset class="mb-2">
+      <label class="text-sm font-semibold" for="difficulty">
+        Select difficulty
+      </label>
+      <select
+        id="'difficulty"
+        class="w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md border border-gray-500 bg-gray-800 px-4 py-2 capitalize"
+        formControlName="difficulty">
+        <option *ngFor="let difficulty of difficulties" [value]="difficulty">
+          {{ difficulty }}
+        </option>
+      </select>
+    </fieldset>
+
+    <fieldset [ngClass]="{ 'mb-8': !data.error, 'mb-4': !!data.error }">
+      <label class="text-sm font-semibold" for="type">
+        Select question type
+      </label>
+      <select
+        id="type"
+        class="w-full overflow-hidden text-ellipsis whitespace-nowrap rounded-md border border-gray-500 bg-gray-800 px-4 py-2 capitalize"
+        formControlName="type">
+        <option *ngFor="let type of types" [value]="type">
+          {{ type | questionType }}
+        </option>
+      </select>
+    </fieldset>
+
+    <div class="mb-8 flex flex-col gap-4">
+      <app-form-error [error]="data.error"></app-form-error>
+
+      <button buttonStyle type="submit" [disabled]="data.isFetching">
+        Creat{{ data.isFetching ? 'ing' : 'e' }} quiz
+      </button>
+    </div>
+  </form>
+
+  <div class="flex flex-col items-center">
+    <span class="mb-2 font-semibold">Powered by</span>
+    <a href="https://opentdb.com/" target="_blank">
+      <img
+        class="w-40"
+        src="../../../../assets/open-trivia-db-logo.png"
+        alt="Open Trivia Database logo" />
+    </a>
+  </div>
+</ng-container>

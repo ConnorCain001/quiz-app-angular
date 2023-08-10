@@ -1,0 +1,52 @@
+<ng-container *ngIf="data$ | async as data">
+  <div *ngIf="data.quiz as quiz">
+    <div class="mb-6 text-center">
+      <h3 class="mb-6 text-4xl font-bold">
+        {{
+          quiz.score > quiz.amount / 2 ? 'Nice work' : 'Better luck next time'
+        }}!
+      </h3>
+
+      <span class="text-center text-xl font-semibold">
+        You got
+        <span class="text-indigo-500">{{ quiz.score }}/{{ quiz.amount }}</span>
+        answers correct
+        <br />
+        with a time of
+        <span class="text-indigo-500">
+          {{ data.time | secondsToDate | date: 'mm:ss' }}
+        </span>
+      </span>
+    </div>
+
+    <div class="mb-12 rounded-lg bg-white/5 p-4 pb-6">
+      <h4 class="mb-4 border-b-2 border-indigo-500 pb-1 text-xl font-semibold">
+        Quiz details
+      </h4>
+      <div class="grid gap-x-4 sm:grid-cols-[max-content,1fr]">
+        <span class="font-semibold">Category:</span>
+        <span class="mb-2 capitalize">{{ quiz.category | category }}</span>
+        <span class="font-semibold">Difficulty:</span>
+        <span class="mb-2 capitalize">{{ quiz.difficulty }}</span>
+        <span class="font-semibold">Question type:</span>
+        <span class="capitalize">{{ quiz.type | questionType }}</span>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-4">
+      <button
+        buttonStyle
+        (click)="regenerateQuiz()"
+        [disabled]="data.isFetching">
+        Regenerat{{ data.isFetching ? 'ing' : 'e' }} quiz
+      </button>
+      <a
+        buttonStyle
+        variant="secondary"
+        replaceUrl="true"
+        [routerLink]="['/quiz/create']">
+        Create new quiz
+      </a>
+    </div>
+  </div>
+</ng-container>
