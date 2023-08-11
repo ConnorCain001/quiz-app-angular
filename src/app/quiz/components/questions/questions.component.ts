@@ -8,22 +8,16 @@ import {
 import { Store } from '@ngrx/store';
 import { QuizState } from '../../types';
 import { QuestionCardComponent } from './components/question-card/question-card.component';
-import { Subscription, combineLatest, interval, timer } from 'rxjs';
+import { Subscription, combineLatest, timer } from 'rxjs';
 import { quizActions } from '../../store/quiz.actions';
 import { Router } from '@angular/router';
-import { TimerComponent } from 'src/app/shared/components/timer/timer.component';
 import { SecondsToDatePipe } from '../../../shared/pipes/seconds-to-date.pipe';
 
 @Component({
   selector: 'app-questions',
   standalone: true,
   templateUrl: './questions.component.html',
-  imports: [
-    CommonModule,
-    QuestionCardComponent,
-    TimerComponent,
-    SecondsToDatePipe,
-  ],
+  imports: [CommonModule, QuestionCardComponent, SecondsToDatePipe],
 })
 export class QuestionsComponent implements OnInit, OnDestroy {
   data$ = combineLatest({
